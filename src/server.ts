@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import { Pool } from "pg";
+import { Pool, Result } from "pg";
 import path from "path";
 const app = express();
 const port = 5000;
@@ -31,7 +31,7 @@ const initDB = async () => {
   await pool.query(`
               CREATE TABLE IF NOT EXISTS todos(
               id SERIAL PRIMARY KEY,
-              user_id INT REFERENCES users(id)  ON DELETE CASCADE,
+              user_id INT REFERENCES users(id) ON DELETE CASCADE,
               title VARCHAR(200) NOT NULL,
               description TEXT,
               completed BOOLEAN DEFAULT false,
@@ -48,13 +48,26 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello from shawon!");
 });
 
-app.post("/users", (req: Request, res: Response) => {
-  console.log(req.body);
+app.post("/users", async (req: Request, res: Response) => {
+  const { name, age, email } = req.body;
 
-  res.status(201).json({
-    message: "users posted successfully",
-    success: true,
-  });
+  try {
+    const result = await pool.query(
+      `INSERT INTO users(name,age,email) VALUES($1,$2,$3) RETURNING *`,
+      [name, age, email]
+    );
+
+    res.status(201).json({
+      message: "successfully added user",
+      success: true,
+      data: result.rows[0],
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      message: err.message,
+      success: false,
+    });
+  }
 });
 
 app.listen(port, () => {
