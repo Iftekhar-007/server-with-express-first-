@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { Pool } from "pg";
+import path from "path";
 const app = express();
 const port = 5000;
-dotenv.config();
+dotenv.config({ path: path.join(process.cwd(), ".env") });
 
 // ! parser
 app.use(express.json());
