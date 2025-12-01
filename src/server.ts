@@ -44,10 +44,12 @@ const initDB = async () => {
 
 initDB();
 
+// ! root api
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from shawon!");
 });
 
+// ! post user api
 app.post("/users", async (req: Request, res: Response) => {
   const { name, age, email } = req.body;
 
@@ -70,6 +72,7 @@ app.post("/users", async (req: Request, res: Response) => {
   }
 });
 
+// ! listen port
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
