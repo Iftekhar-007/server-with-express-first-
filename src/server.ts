@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import { Pool, Result } from "pg";
 import path from "path";
@@ -45,8 +45,13 @@ const initDB = async () => {
 
 initDB();
 
+const logger = (req: Request, res: Response, next: NextFunction) => {
+  console.log("ami tr baap", Date.now(), req.path, req.url);
+  next();
+};
+
 // ! root api
-app.get("/", (req: Request, res: Response) => {
+app.get("/", logger, (req: Request, res: Response) => {
   res.send("Hello from shawon!");
 });
 
