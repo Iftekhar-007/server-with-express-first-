@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
+import { pool } from "../../config/db";
 
 const createUser = async (req: Request, res: Response) => {
   const { name, age, email } = req.body;
@@ -20,6 +21,45 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+const getUser = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.getUser();
+
+    res.status(200).json({
+      success: true,
+      data: result.rows,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      detaile: err,
+    });
+  }
+};
+
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.getSingleUser(req.params.id as string);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: " no user found with this id",
+      });
+    } else {
+      res.send(result.rows[0]);
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 export const userControllers = {
   createUser,
+  getUser,
+  getSingleUser,
 };

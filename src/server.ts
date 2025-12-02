@@ -25,31 +25,9 @@ app.get("/", logger, (req: Request, res: Response) => {
 
 // ! get users
 
+// ! get single user api
+
 app.use("/users", userRoutes);
-
-// ! get user api
-
-app.get("/users/:id", async (req: Request, res: Response) => {
-  try {
-    const result = await pool.query(`SELECT * FROM users WHERE id = $1`, [
-      req.params.id,
-    ]);
-
-    if (result.rows.length === 0) {
-      res.status(404).json({
-        success: false,
-        message: " no user found with this id",
-      });
-    } else {
-      res.send(result.rows[0]);
-    }
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-});
 
 // ! put update api
 
