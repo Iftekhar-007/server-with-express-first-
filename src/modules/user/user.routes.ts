@@ -1,29 +1,10 @@
 import express, { Request, Response } from "express";
 import { pool } from "../../config/db";
+import { userControllers } from "./user.controller";
 
 const router = express.Router();
 
-router.post("/", async (req: Request, res: Response) => {
-  const { name, age, email } = req.body;
-
-  try {
-    const result = await pool.query(
-      `INSERT INTO users(name,age,email) VALUES($1,$2,$3) RETURNING *`,
-      [name, age, email]
-    );
-
-    res.status(201).json({
-      message: "successfully added user",
-      success: true,
-      data: result.rows[0],
-    });
-  } catch (err: any) {
-    res.status(504).json({
-      message: err.message,
-      success: false,
-    });
-  }
-});
+router.post("/", userControllers.createUser);
 
 router.get("/", async (req: Request, res: Response) => {
   try {
