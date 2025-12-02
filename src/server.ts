@@ -23,9 +23,9 @@ app.get("/", logger, (req: Request, res: Response) => {
 
 // ! post user api
 
-app.use("/users", userRoutes);
-
 // ! get users
+
+app.use("/users", userRoutes);
 
 // ! get user api
 
