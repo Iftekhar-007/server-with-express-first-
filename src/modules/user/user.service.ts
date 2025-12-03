@@ -19,8 +19,23 @@ const getSingleUser = async (id: string) => {
   return result;
 };
 
+const updateUser = async (
+  name: string,
+  age: number,
+  email: string,
+  id: string
+) => {
+  const result = await pool.query(
+    `UPDATE users SET name=$1, age=$2,email=$3 WHERE id=$4 RETURNING *`,
+    [name, age, email, id]
+  );
+
+  return result;
+};
+
 export const userServices = {
   createUser,
   getUser,
   getSingleUser,
+  updateUser,
 };

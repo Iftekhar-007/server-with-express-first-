@@ -27,33 +27,9 @@ app.get("/", logger, (req: Request, res: Response) => {
 
 // ! get single user api
 
-app.use("/users", userRoutes);
-
 // ! put update api
 
-app.put("/users/:id", async (req: Request, res: Response) => {
-  const { name, age, email } = req.body;
-  try {
-    const result = await pool.query(
-      `UPDATE users SET name=$1, age=$2,email=$3 WHERE id=$4 RETURNING *`,
-      [name, age, email, req.params.id]
-    );
-
-    if (result.rows.length === 0) {
-      res.status(404).json({
-        success: false,
-        message: " no user found with this id",
-      });
-    } else {
-      res.send(result.rows[0]);
-    }
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-});
+app.use("/users", userRoutes);
 
 // ! delete api
 
