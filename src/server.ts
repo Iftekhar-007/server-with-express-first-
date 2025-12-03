@@ -21,7 +21,7 @@ app.get("/", logger, (req: Request, res: Response) => {
   res.send("Hello from shawon!");
 });
 
-// ! users crud
+// ! users crud full
 
 app.use("/users", userRoutes);
 
