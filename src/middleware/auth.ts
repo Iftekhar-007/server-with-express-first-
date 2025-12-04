@@ -13,8 +13,17 @@ const auth = (...roles: string[]) => {
         });
       }
 
-      const decoded = jwt.verify(token, config.jwt_secret as string);
-      req.user = decoded as JwtPayload;
+      const decoded = jwt.verify(
+        token,
+        config.jwt_secret as string
+      ) as JwtPayload;
+      req.user = decoded;
+
+      if (roles.length && !roles.includes(decoded.role)) {
+        return res.status(403).json({
+          message: "you have no authority to access this url",
+        });
+      }
       next();
     } catch (err: any) {
       res.status(500).json({
