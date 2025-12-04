@@ -1,9 +1,14 @@
 import { pool } from "../../config/db";
 
-const createUser = async (name: string, age: number, email: string) => {
+const createUser = async (
+  name: string,
+  age: number,
+  email: string,
+  password: string
+) => {
   const result = await pool.query(
-    `INSERT INTO users(name,age,email) VALUES($1,$2,$3) RETURNING *`,
-    [name, age, email]
+    `INSERT INTO users(name,age,email,password) VALUES($1,$2,$3,$4) RETURNING *`,
+    [name, age, email, password]
   );
 
   return result;
