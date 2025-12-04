@@ -3,7 +3,7 @@ import { userServices } from "./user.service";
 import { pool } from "../../config/db";
 
 const createUser = async (req: Request, res: Response) => {
-  const { name, age, email, password } = req.body;
+  const { name, role, age, email, password } = req.body;
 
   try {
     const result = await userServices.createUser(req.body);
