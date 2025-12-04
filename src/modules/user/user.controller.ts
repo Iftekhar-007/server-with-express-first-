@@ -6,7 +6,7 @@ const createUser = async (req: Request, res: Response) => {
   const { name, age, email, password } = req.body;
 
   try {
-    const result = await userServices.createUser(name, age, email, password);
+    const result = await userServices.createUser(req.body);
 
     res.status(201).json({
       message: "successfully added user",
